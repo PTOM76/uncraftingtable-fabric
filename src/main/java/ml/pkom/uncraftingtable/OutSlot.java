@@ -26,18 +26,17 @@ public class OutSlot extends Slot {
     public void setStack(ItemStack stack) {
         super.setStack(stack);
         if (stack.isEmpty()) {
-            insertSlot.player.inventory.offerOrDrop(insertSlot.player.world, insertSlot.player.inventory.getCursorStack());
+            insertSlot.player.getInventory().offerOrDrop(insertSlot.player.playerScreenHandler.getCursorStack());
             /*if (canGive(insertSlot.player.inventory.main)) {
                 insertSlot.player.giveItemStack(insertSlot.player.inventory.getCursorStack());
             } else {
                 insertSlot.player.dropItem(insertSlot.player.inventory.getCursorStack(), false);
             }
-
              */
-            insertSlot.player.inventory.getCursorStack().setCount(0);
+            insertSlot.player.playerScreenHandler.getCursorStack().setCount(0);
 
             for (int i = 1;i < 10;i++) {
-                insertSlot.player.inventory.offerOrDrop(insertSlot.player.world, inventory.getStack(i));
+                insertSlot.player.getInventory().offerOrDrop(inventory.getStack(i));
                 /*
                 if (canGive(insertSlot.player.inventory.main)) {
                     insertSlot.player.giveItemStack(inventory.getStack(i));
