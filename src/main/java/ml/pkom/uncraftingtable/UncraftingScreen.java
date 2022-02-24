@@ -1,14 +1,14 @@
 package ml.pkom.uncraftingtable;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -30,7 +30,7 @@ public class UncraftingScreen extends HandledScreen<ScreenHandler> {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
 
-        this.addButton(new TexturedButtonWidget(x + 31,  y +58, 12, 12, 0, 168, 16, GUI, (buttonWidget) -> {
+        this.addDrawableChild(new TexturedButtonWidget(x + 31,  y +58, 12, 12, 0, 168, 16, GUI, (buttonWidget) -> {
             // クライアントの反映
             if (handler.getSlot(0) instanceof InsertSlot) {
                 InsertSlot slot = (InsertSlot) handler.getSlot(0);
@@ -39,13 +39,13 @@ public class UncraftingScreen extends HandledScreen<ScreenHandler> {
             }
             // サーバーに送信
             PacketByteBuf buf = PacketByteBufs.create();
-            CompoundTag nbt = new CompoundTag();
+            NbtCompound nbt = new NbtCompound();
             nbt.putInt("control", 0);
-            buf.writeCompoundTag(nbt);
+            buf.writeNbt(nbt);
             ClientPlayNetworking.send(UncraftingTable.id("network"), buf);
         }));
 
-        this.addButton(new TexturedButtonWidget( x + 45, y + 58, 12, 12, 16, 168, 16, GUI, (buttonWidget) -> {
+        this.addDrawableChild(new TexturedButtonWidget( x + 45, y + 58, 12, 12, 16, 168, 16, GUI, (buttonWidget) -> {
             // クライアントの反映
             if (handler.getSlot(0) instanceof InsertSlot) {
                 InsertSlot slot = (InsertSlot) handler.getSlot(0);
@@ -54,9 +54,9 @@ public class UncraftingScreen extends HandledScreen<ScreenHandler> {
             }
             // サーバーに送信
             PacketByteBuf buf = PacketByteBufs.create();
-            CompoundTag nbt = new CompoundTag();
+            NbtCompound nbt = new NbtCompound();
             nbt.putInt("control", 1);
-            buf.writeCompoundTag(nbt);
+            buf.writeNbt(nbt);
             ClientPlayNetworking.send(UncraftingTable.id("network"), buf);
         }));
     }
@@ -66,8 +66,9 @@ public class UncraftingScreen extends HandledScreen<ScreenHandler> {
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
 
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        MinecraftClient.getInstance().getTextureManager().bindTexture(GUI);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, GUI);
         drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 

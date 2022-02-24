@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
@@ -28,7 +28,7 @@ public class UncraftingTable implements ModInitializer {
         Registry.register(Registry.ITEM, id("uncraftingtable"), new BlockItem(UncraftingTableBlock.UNCRAFTING_TABLE, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
 
         ServerPlayNetworking.registerGlobalReceiver(id("network"), ((server, player, handler, buf, responseSender) -> {
-            CompoundTag nbt = buf.readCompoundTag();
+            NbtCompound nbt = buf.readNbt();
             if (nbt.contains("control")) {
                 int ctrl = nbt.getInt("control");
                 if (ctrl == 0) {

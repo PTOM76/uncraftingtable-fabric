@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +50,7 @@ public class InsertSlot extends Slot {
     public void updateRecipe(List<Recipe<?>> outRecipes) {
         CraftingRecipe recipe = (CraftingRecipe) outRecipes.get(recipeIndex);
         latestOutputCount = recipe.getOutput().getCount();
-        if (recipe.getPreviewInputs().size() > 5) {
+        if (recipe.getIngredients().size() > 5) {
             setOutStack(0, itemIndex, recipe, 1);
             setOutStack(1, itemIndex, recipe, 1);
             setOutStack(2, itemIndex, recipe, 1);
@@ -95,8 +94,8 @@ public class InsertSlot extends Slot {
         }
         World world = player.world;
         Collection<Recipe<?>> recipes = world.getRecipeManager().values();
-        List<Recipe<?>> outRecipes = new ArrayList();
-        for (Recipe recipe : recipes) {
+        List<Recipe<?>> outRecipes = new ArrayList<>();
+        for (Recipe<?> recipe : recipes) {
             if (!recipe.getType().equals(RecipeType.CRAFTING)) continue;
             if (recipe.getOutput().getCount() > stack.getCount()) continue;
             if (recipe.getOutput().getItem().equals(stack.getItem())) {
@@ -110,7 +109,7 @@ public class InsertSlot extends Slot {
         if (!stack.isEmpty())
             latestItemStack = stack.copy();
         //int count = (int) Math.floor(stack.getCount() / recipe.getOutput().getCount());
-        if (recipe.getPreviewInputs().size() > 5) {
+        if (recipe.getIngredients().size() > 5) {
             setOutStack(0, itemIndex, recipe, 1);
             setOutStack(1, itemIndex, recipe, 1);
             setOutStack(2, itemIndex, recipe, 1);
@@ -130,10 +129,10 @@ public class InsertSlot extends Slot {
 
     public void setOutStack(int index, int id, Recipe recipe, int count) {
         try {
-            if (index >= recipe.getPreviewInputs().size() || recipe.getPreviewInputs().size() == 0) return;
-            Ingredient input = ((Ingredient) recipe.getPreviewInputs().get(index));
-            if (input.getIds().size() == 0 || id >= input.getIds().size()) return;
-            inventory.setStack(index + 1, RecipeFinder.getStackFromId(input.getIds().getInt(id)));
+            if (index >= recipe.getIngredients().size() || recipe.getIngredients().size() == 0) return;
+            Ingredient input = ((Ingredient) recipe.getIngredients().get(index));
+            if (input.getMatchingItemIds().size() == 0 || id >= input.getMatchingItemIds().size()) return;
+            inventory.setStack(index + 1, RecipeMatcher.getStackFromId(input.getMatchingItemIds().getInt(id)));
             inventory.getStack(index + 1).setCount(count);
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             inventory.setStack(index + 1, ItemStack.EMPTY);
@@ -142,14 +141,14 @@ public class InsertSlot extends Slot {
 
     public void set4x4OutStack(int index, int id, Recipe recipe, int count) {
         try {
-            if (index >= recipe.getPreviewInputs().size() || recipe.getPreviewInputs().size() == 0) return;
-            Ingredient input = ((Ingredient) recipe.getPreviewInputs().get(index));
-            if (input.getIds().size() == 0 || id >= input.getIds().size()) return;
+            if (index >= recipe.getIngredients().size() || recipe.getIngredients().size() == 0) return;
+            Ingredient input = ((Ingredient) recipe.getIngredients().get(index));
+            if (input.getMatchingItemIds().size() == 0 || id >= input.getMatchingItemIds().size()) return;
             if (index <= 1) {
-                inventory.setStack(index + 1, RecipeFinder.getStackFromId(input.getIds().getInt(id)));
+                inventory.setStack(index + 1, RecipeMatcher.getStackFromId(input.getMatchingItemIds().getInt(id)));
                 inventory.getStack(index + 1).setCount(count);
             } else {
-                inventory.setStack(index + 2, RecipeFinder.getStackFromId(input.getIds().getInt(id)));
+                inventory.setStack(index + 2, RecipeMatcher.getStackFromId(input.getMatchingItemIds().getInt(id)));
                 inventory.getStack(index + 2).setCount(count);
             }
 
