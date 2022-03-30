@@ -15,8 +15,11 @@ public class InsertSlot extends Slot {
     public PlayerEntity player;
     public int recipeIndex = 0;
     public int itemIndex = 0;
-    public List<Recipe<?>> latestOutRecipes;
+    public List<Recipe<?>> latestOutRecipes = new ArrayList<>();
     public ItemStack latestItemStack = ItemStack.EMPTY;
+
+    // OutSlotでGetできるかどうか。(バグ対策)
+    public boolean canGet = true;
 
     public InsertSlot(Inventory inventory, int index, int x, int y, PlayerEntity player) {
         super(inventory, index, x, y);
@@ -32,6 +35,7 @@ public class InsertSlot extends Slot {
             recipeIndex = 0;
         }
         //updateRecipe(latestOutRecipes);
+        latestItemStack.setCount(getStack().getCount());
         setStack(latestItemStack);
     }
 
@@ -44,6 +48,7 @@ public class InsertSlot extends Slot {
             recipeIndex = maxIndex;
         }
         //updateRecipe(latestOutRecipes);
+        latestItemStack.setCount(getStack().getCount());
         setStack(latestItemStack);
     }
 
@@ -85,6 +90,7 @@ public class InsertSlot extends Slot {
         //System.out.println(stack.getItem().getName().getString());
         //System.out.println(latestItemStack.getItem().getName().getString());
         super.setStack(stack);
+        if (player.getWorld().isClient()) return;
         for (int i = 1; i < 10; ++i)
             ((OutSlot)player.currentScreenHandler.getSlot(i)).superSetStack(ItemStack.EMPTY);
         if (stack.isEmpty()) return;
@@ -135,8 +141,10 @@ public class InsertSlot extends Slot {
             inventory.setStack(index + 1, RecipeMatcher.getStackFromId(input.getMatchingItemIds().getInt(id)));
             inventory.getStack(index + 1).setCount(count);
         } catch (NullPointerException | IndexOutOfBoundsException e) {
+            canGet = false;
             inventory.setStack(index + 1, ItemStack.EMPTY);
         }
+        canGet = true;
     }
 
     public void set4x4OutStack(int index, int id, Recipe recipe, int count) {
@@ -153,8 +161,10 @@ public class InsertSlot extends Slot {
             }
 
         } catch (NullPointerException | IndexOutOfBoundsException e) {
+            canGet = false;
             inventory.setStack(index + 1, ItemStack.EMPTY);
         }
+        canGet = true;
     }
 
 }

@@ -37,6 +37,10 @@ public class UncraftingScreenHandler extends ScreenHandler {
         }
     }
 
+    public static void init() {
+
+    }
+
     @Override
     public ItemStack transferSlot(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;

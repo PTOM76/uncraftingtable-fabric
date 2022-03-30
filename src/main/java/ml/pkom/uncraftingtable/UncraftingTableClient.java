@@ -1,11 +1,11 @@
 package ml.pkom.uncraftingtable;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
 public class UncraftingTableClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ScreenRegistry.register(UncraftingScreenHandler.SCREEN_HANDLER_TYPE, UncraftingScreen::new);
+        HandledScreens.register(UncraftingScreenHandler.SCREEN_HANDLER_TYPE, UncraftingScreen::new);
     }
 }

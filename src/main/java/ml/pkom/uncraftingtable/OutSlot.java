@@ -6,6 +6,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.collection.DefaultedList;
 
 public class OutSlot extends Slot {
+    // 3 * 3 Slot
     public InsertSlot insertSlot;
 
     public OutSlot(Inventory inventory, int index, int x, int y, InsertSlot slot) {
@@ -25,7 +26,7 @@ public class OutSlot extends Slot {
     @Override
     public void setStack(ItemStack stack) {
         super.setStack(stack);
-        if (stack.isEmpty()) {
+        if (!insertSlot.player.getWorld().isClient() && stack.isEmpty() && insertSlot.canGet) {
             insertSlot.player.getInventory().offerOrDrop(insertSlot.player.playerScreenHandler.getCursorStack());
             /*if (canGive(insertSlot.player.inventory.main)) {
                 insertSlot.player.giveItemStack(insertSlot.player.inventory.getCursorStack());
@@ -54,6 +55,9 @@ public class OutSlot extends Slot {
                 insertStack.setCount(insertStack.getCount() - insertSlot.latestOutputCount);
                 insertSlot.setStack(insertStack);
             }
+        }
+        if (insertSlot.player.getWorld().isClient()) {
+            insertSlot.markDirty();
         }
     }
 
