@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,8 +94,8 @@ public class InsertSlot extends Slot {
         }
         World world = player.world;
         Collection<Recipe<?>> recipes = world.getRecipeManager().values();
-        List<Recipe<?>> outRecipes = new ArrayList();
-        for (Recipe recipe : recipes) {
+        List<Recipe<?>> outRecipes = new ArrayList<>();
+        for (Recipe<?> recipe : recipes) {
             if (!recipe.getType().equals(RecipeType.CRAFTING)) continue;
             if (recipe.getOutput().getCount() > stack.getCount()) continue;
             if (recipe.getOutput().getItem().equals(stack.getItem())) {

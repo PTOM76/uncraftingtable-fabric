@@ -23,8 +23,8 @@
     "client": ["ml.pkom.uncraftingtable.UncraftingTableClient"]
   },
   "depends": {
-    "fabricloader": "*",
-    "fabric": "*",
-    "minecraft": "*"
+    "fabricloader": ">=0.13.1",
+    "fabric": ">=0.46.1",
+    "minecraft": "1.18.x"
   }
 }
