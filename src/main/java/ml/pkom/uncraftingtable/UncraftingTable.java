@@ -1,5 +1,6 @@
 package ml.pkom.uncraftingtable;
 
+import ml.pkom.mcpitanlib.api.register.v2.Registries;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -24,8 +25,9 @@ public class UncraftingTable implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Registry.register(Registry.BLOCK, id("uncraftingtable"), UncraftingTableBlock.UNCRAFTING_TABLE);
-        Registry.register(Registry.ITEM, id("uncraftingtable"), new BlockItem(UncraftingTableBlock.UNCRAFTING_TABLE, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
+        Registries.registerBlock(id("uncraftingtable"), UncraftingTableBlock.UNCRAFTING_TABLE, new FabricItemSettings().group(ItemGroup.DECORATIONS));
+        //Registry.register(Registry.BLOCK, id("uncraftingtable"), UncraftingTableBlock.UNCRAFTING_TABLE);
+        //Registry.register(Registry.ITEM, id("uncraftingtable"), new BlockItem(UncraftingTableBlock.UNCRAFTING_TABLE, new FabricItemSettings().group(ItemGroup.DECORATIONS)));
         UncraftingScreenHandler.init();
 
         ServerPlayNetworking.registerGlobalReceiver(id("network"), ((server, player, handler, buf, responseSender) -> {

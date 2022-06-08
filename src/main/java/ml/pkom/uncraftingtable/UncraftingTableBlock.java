@@ -1,13 +1,15 @@
 package ml.pkom.uncraftingtable;
 
+import ml.pkom.mcpitanlib.api.text.TextUtil;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CraftingTableBlock;
+import net.minecraft.block.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -16,7 +18,7 @@ import net.minecraft.world.World;
 
 public class UncraftingTableBlock extends CraftingTableBlock {
 
-    private static final Text TITLE = new TranslatableText("container.uncraftingtable76.uncrafting");
+    private static final Text TITLE = TextUtil.literal("container.uncraftingtable76.uncrafting");
 
     public static UncraftingTableBlock UNCRAFTING_TABLE = new UncraftingTableBlock(FabricBlockSettings
             .of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD)
