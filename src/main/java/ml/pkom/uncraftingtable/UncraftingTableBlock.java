@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class UncraftingTableBlock extends CraftingTableBlock {
 
-    private static final Text TITLE = TextUtil.literal("container.uncraftingtable76.uncrafting");
+    private static final Text TITLE = TextUtil.translatable("container.uncraftingtable76.uncrafting");
 
     public static UncraftingTableBlock UNCRAFTING_TABLE = new UncraftingTableBlock(FabricBlockSettings
             .of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD)
